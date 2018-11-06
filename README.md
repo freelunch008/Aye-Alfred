@@ -1,7 +1,7 @@
 # Aye-Alfred
 AI powered assistant that makes scheduling meetings easier
 
-Concept Overview
+Concept Overview::
 Aye ‘Alfred is an AI powered assistant that makes scheduling meetings easier.
 Aye ‘Alfred can be fully integrated into your corporate calendar tool of choice.
 Simply instruct him to schedule a meeting or a call with a colleague or a team via email, voice or over chat.
@@ -13,7 +13,7 @@ That’s it.
 
 ![alt tag](https://raw.githubusercontent.com/freelunch008/Aye-Alfred/master/architecture_v1.png)
 
-Architecture Overview
+Architecture Overview::
 We have come up with a solution that will facilitate end-to-end process automation of meeting scheduling.
 Currently ‘Aye’ Alfred’ application is deployed in AWS and is fully scalable and can also easily be extended to provide more functionality.
 Request for scheduling a meeting is supported for multiple channels i.e., through emails, or voice inputs or through an instant messenger. Processing of these requests is handled differently for each of the channels.
