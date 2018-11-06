@@ -1,0 +1,6 @@
+{"getColleagueOneName":"Hey user can you provide the name of the colleague with whom you want to setup the meeting?",
+"getDay":"Hey user can you provide the date when you want to setup the call?",
+"startConversation":"Hello user, I can help you with setting up a conference call or meeting with your collegues. So with whom do you want to setup meet?",
+"getLocation":"Can you provide the location/bridge where you want to setup the meeting?",
+"eventTitle":"What this meeting about?"
+}

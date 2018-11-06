@@ -1,0 +1,315 @@
+{
+  "metadata": {
+    "schemaVersion": "1.0",
+    "importType": "LEX",
+    "importFormat": "JSON"
+  },
+  "resource": {
+    "name": "setupMeet",
+    "version": "5",
+    "intents": [
+      {
+        "name": "startConversation",
+        "version": "1",
+        "fulfillmentActivity": {
+          "type": "ReturnIntent"
+        },
+        "sampleUtterances": [
+          "Hey",
+          "Hello",
+          "Hi"
+        ],
+        "slots": [],
+        "conclusionStatement": {
+          "messages": [
+            {
+              "contentType": "PlainText",
+              "content": "Hello user, I can help you with setting up a conference call or meeting with your collegues. So with whom do you want to setup meet?",
+              "groupNumber": 1
+            }
+          ]
+        }
+      },
+      {
+        "name": "conferenceSetup",
+        "version": "26",
+        "fulfillmentActivity": {
+          "type": "ReturnIntent"
+        },
+        "sampleUtterances": [
+          "I would like to setup a meet with {colleagueOne}",
+          "setup meeting with {colleagueOne} and {colleagueTwo}",
+          "setup meeting with {colleagueOne} and {colleagueTwo} on {day}",
+          "setup meeting with {colleagueOne} and {colleagueTwo} on {day} {relativeTime} {time}",
+          "setup meet with {colleagueOne} and {colleagueTwo}",
+          "{relativeTime} {time}",
+          "{day}",
+          "setup meet",
+          "setup conference",
+          "{colleagueOne}",
+          "with {colleagueOne}",
+          "{colleagueOne} and {colleagueTwo}",
+          "setup meet with {colleagueOne} and {colleagueTwo} on {day} at {meetLocation}",
+          "{meetLocation}",
+          "setup meeting with {colleagueOne} on {day} at {meetLocation}",
+          "{eventTitle}",
+          "setup meeting with {colleagueOne} on {day} at {meetLocation} to discuss {eventTitle}",
+          "{time}"
+        ],
+        "slots": [
+          {
+            "name": "colleagueOne",
+            "slotConstraint": "Required",
+            "slotType": "colleague",
+            "slotTypeVersion": "4",
+            "valueElicitationPrompt": {
+              "messages": [
+                {
+                  "contentType": "PlainText",
+                  "content": "e.g. What city?"
+                }
+              ],
+              "maxAttempts": 2
+            },
+            "priority": 1,
+            "sampleUtterances": []
+          },
+          {
+            "name": "colleagueTwo",
+            "slotConstraint": "Optional",
+            "slotType": "colleague",
+            "slotTypeVersion": "4",
+            "valueElicitationPrompt": {
+              "messages": [
+                {
+                  "contentType": "PlainText",
+                  "content": "e.g. What city?"
+                }
+              ],
+              "maxAttempts": 2
+            },
+            "priority": 7,
+            "sampleUtterances": []
+          },
+          {
+            "name": "day",
+            "slotConstraint": "Required",
+            "slotType": "AMAZON.DATE",
+            "valueElicitationPrompt": {
+              "messages": [
+                {
+                  "contentType": "PlainText",
+                  "content": "e.g. What city?"
+                }
+              ],
+              "maxAttempts": 2
+            },
+            "priority": 2,
+            "sampleUtterances": []
+          },
+          {
+            "name": "eventTitle",
+            "slotConstraint": "Required",
+            "slotType": "eventTitle",
+            "slotTypeVersion": "1",
+            "valueElicitationPrompt": {
+              "messages": [
+                {
+                  "contentType": "PlainText",
+                  "content": "e.g. What city?"
+                }
+              ],
+              "maxAttempts": 2
+            },
+            "priority": 4,
+            "sampleUtterances": []
+          },
+          {
+            "name": "meetLocation",
+            "slotConstraint": "Required",
+            "slotType": "meetLocation",
+            "slotTypeVersion": "2",
+            "valueElicitationPrompt": {
+              "messages": [
+                {
+                  "contentType": "PlainText",
+                  "content": "e.g. What city?"
+                }
+              ],
+              "maxAttempts": 2
+            },
+            "priority": 3,
+            "sampleUtterances": []
+          },
+          {
+            "name": "relativeTime",
+            "slotConstraint": "Optional",
+            "slotType": "relativeTime",
+            "slotTypeVersion": "1",
+            "valueElicitationPrompt": {
+              "messages": [
+                {
+                  "contentType": "PlainText",
+                  "content": "e.g. What city?"
+                }
+              ],
+              "maxAttempts": 2
+            },
+            "priority": 6,
+            "sampleUtterances": []
+          },
+          {
+            "name": "time",
+            "slotConstraint": "Optional",
+            "slotType": "AMAZON.TIME",
+            "valueElicitationPrompt": {
+              "messages": [
+                {
+                  "contentType": "PlainText",
+                  "content": "e.g. What city?"
+                }
+              ],
+              "maxAttempts": 2
+            },
+            "priority": 5,
+            "sampleUtterances": []
+          }
+        ],
+        "conclusionStatement": {
+          "messages": [
+            {
+              "contentType": "PlainText",
+              "content": "You have successfully setup a meet",
+              "groupNumber": 1
+            }
+          ]
+        }
+      }
+    ],
+    "slotTypes": [
+      {
+        "name": "relativeTime",
+        "version": "1",
+        "enumerationValues": [
+          {
+            "value": "at"
+          },
+          {
+            "value": "before",
+            "synonyms": [
+              "pre"
+            ]
+          },
+          {
+            "value": "after",
+            "synonyms": [
+              "post"
+            ]
+          }
+        ],
+        "valueSelectionStrategy": "TOP_RESOLUTION"
+      },
+      {
+        "description": "calender event summary",
+        "name": "eventTitle",
+        "version": "1",
+        "enumerationValues": [
+          {
+            "value": "Orbipay UMS Deployment"
+          },
+          {
+            "value": "Ella Deployment"
+          },
+          {
+            "value": "Orbipay OBCS Deployment"
+          },
+          {
+            "value": "Orbipay OBCS Development"
+          },
+          {
+            "value": "Ella Feature Development"
+          }
+        ],
+        "valueSelectionStrategy": "ORIGINAL_VALUE"
+      },
+      {
+        "description": "collegueTwo",
+        "name": "colleague",
+        "version": "4",
+        "enumerationValues": [
+          {
+            "value": "virat"
+          },
+          {
+            "value": "neha"
+          },
+          {
+            "value": "rahul"
+          },
+          {
+            "value": "ravi"
+          },
+          {
+            "value": "tim"
+          },
+          {
+            "value": "manohar"
+          },
+          {
+            "value": "ajay"
+          }
+        ],
+        "valueSelectionStrategy": "TOP_RESOLUTION"
+      },
+      {
+        "name": "meetLocation",
+        "version": "2",
+        "enumerationValues": [
+          {
+            "value": "alacriti conference room 2 bridge 506"
+          },
+          {
+            "value": "alacriti conference room 1 bridge 100"
+          },
+          {
+            "value": "conference room 3"
+          },
+          {
+            "value": "bridge 101"
+          },
+          {
+            "value": "conference room 1"
+          },
+          {
+            "value": "conference room 1 bridge 100"
+          },
+          {
+            "value": "alacriti conference room 3 bridge 101"
+          }
+        ],
+        "valueSelectionStrategy": "ORIGINAL_VALUE"
+      }
+    ],
+    "voiceId": "Salli",
+    "childDirected": false,
+    "locale": "en-US",
+    "idleSessionTTLInSeconds": 300,
+    "clarificationPrompt": {
+      "messages": [
+        {
+          "contentType": "PlainText",
+          "content": "Sorry, can you please repeat that?"
+        }
+      ],
+      "maxAttempts": 5
+    },
+    "abortStatement": {
+      "messages": [
+        {
+          "contentType": "PlainText",
+          "content": "Sorry, I could not understand. Goodbye."
+        }
+      ]
+    }
+  }
+}
