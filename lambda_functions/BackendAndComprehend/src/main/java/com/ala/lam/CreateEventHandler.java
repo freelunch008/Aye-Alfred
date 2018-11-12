@@ -275,6 +275,8 @@ public class CreateEventHandler {
 		long startTime=cvo.getStartDate();
 		long endDate=cvo.getEndDate();
 		
+		  context.getLogger().log("expected date range "+startTime+ " : "+endDate);
+		
 		List<String> attendeeTimes=new ArrayList<String>();
 		
 		long eventStart=startTime;
@@ -334,19 +336,24 @@ public class CreateEventHandler {
 	                {
 	                    DateTime start = eventt.getStart().getDateTime();      
 	                    DateTime end = eventt.getEnd().getDateTime();
+	                    
+	                    System.out.println("Upcoming events start "+start.toString());
+	                    System.out.println("Upcoming events end "+end.toString());
+	                    
+	                    
 	                    long tmps=0;
 	                    long tmpe=0;
 	                    
 	                    if (start != null) 
 	                    {
-	                    	tmps=CalendarUtils.ConvertFormattedDateToMilis(start.toString().split("+")[0]);
+	                    	tmps=CalendarUtils.ConvertFormattedDateToMilis(start.toString().split("\\+")[0]);
 
 	                    }
 	                    
 	                    
 	                    if (end != null) 
 	                    {
-	                    	tmpe=CalendarUtils.ConvertFormattedDateToMilis(end.toString().split("+")[0]);
+	                    	tmpe=CalendarUtils.ConvertFormattedDateToMilis(end.toString().split("\\+")[0]);
 
 	                    }
 	                    if(tmps>0 && tmpe>0)
@@ -361,29 +368,59 @@ public class CreateEventHandler {
 		//for loop attendee	
 		}
 		context.getLogger().log("before getCompactOverlappedRegion");
+		context.getLogger().log("Array 1"+attendeeTimes);
 		attendeeTimes=CalendarUtils.getCompactOverlappedRegion(attendeeTimes);
+		context.getLogger().log("Array 2"+attendeeTimes);
 		Collections.sort(attendeeTimes);
+		context.getLogger().log("Array 3"+attendeeTimes);
 		context.getLogger().log("after getCompactOverlappedRegion");
 		
-		int found=0;
-		for(int i=0;i<attendeeTimes.size();i++)
+		if(attendeeTimes.size()>0)
 		{
-			for(int j=i+1;j<attendeeTimes.size();j++)
+			
+			int found=0;
+			for(int i=0;i<attendeeTimes.size();i++)
 			{
-				long end1=Long.parseLong(attendeeTimes.get(i).split(":")[1]);
-				long start2=Long.parseLong(attendeeTimes.get(j).split(":")[0]);
-				
-				if((start2-end1)>30*60*1000)
+				if(attendeeTimes.size()==1)
 				{
-					eventStart=end1;
-					eventEnd=end1+30*60*1000;
-					found++;
-					break;
-					
+					if(Long.parseLong(attendeeTimes.get(0).split(":")[0])-eventStart>=30*60*1000)
+					{
+						break;
+					}
 				}
+				
+				
+				
+				for(int j=i+1;j<attendeeTimes.size();j++)
+				{
+					long end1=Long.parseLong(attendeeTimes.get(i).split(":")[1]);
+					long start2=Long.parseLong(attendeeTimes.get(j).split(":")[0]);
+					
+					if((start2-end1)>=30*60*1000)
+					{
+						eventStart=end1;
+						eventEnd=end1+30*60*1000;
+						found++;
+						break;
+						
+					}
+	
+				}
+				
 				if(found>0)
 					break;
 
+			}
+			
+			if(found==0)
+			{
+				
+			 if(endDate-Long.parseLong(attendeeTimes.get(attendeeTimes.size()-1).split(":")[1])>=30*60*1000)
+			 {
+				 eventStart=Long.parseLong(attendeeTimes.get(attendeeTimes.size()-1).split(":")[1])	;
+				 eventEnd=eventStart+30*60*1000;
+			 }
+			
 			}
 		}
 		

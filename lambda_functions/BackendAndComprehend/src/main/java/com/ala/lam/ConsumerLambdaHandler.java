@@ -195,10 +195,15 @@ public  class ConsumerLambdaHandler implements RequestHandler<SQSEvent, Void>{
    			 etime=result+"T"+"23:59:59.000";
 	    	}
 	    	
-	 
+	    	context.getLogger().log("** stime** "+stime);
+	    	context.getLogger().log("** etime** "+etime);
 	    	
-    		eventTime.setStart(CalendarUtils.ConvertFormattedDateToMilis(stime)-330*60*1000);
-    		eventTime.setEnd(CalendarUtils.ConvertFormattedDateToMilis(etime)-330*60*1000);
+    		eventTime.setStart(CalendarUtils.ConvertFormattedDateToMilis(stime));
+    		eventTime.setEnd(CalendarUtils.ConvertFormattedDateToMilis(etime));
+    		
+    	   	context.getLogger().log("** stime** "+eventTime.getStart());
+	    	context.getLogger().log("** etime** "+eventTime.getEnd());
+	    
     		
 
 	    	

@@ -18,6 +18,9 @@ public class CalendarUtils {
 
     public static String ConvertMilliSecondsToFormattedDate(long milliSeconds){
         Calendar calendar = Calendar.getInstance();
+        
+
+        
         calendar.setTimeInMillis(milliSeconds);
         return simpleDateFormat.format(calendar.getTime()).replace(" ", "T");
     }
@@ -34,9 +37,11 @@ public class CalendarUtils {
     }
     
     public static long ConvertFormattedDateToMilis(String date) throws ParseException{
-    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
     	
     	TimeZone tz=TimeZone.getTimeZone("Asia/Calcutta");
+    	sdf.setTimeZone(tz);
+    	
     	Date result = sdf.parse(date.replace("T", " "));
     	long timeInMillis = result.getTime();
     	return timeInMillis;
@@ -66,24 +71,33 @@ public class CalendarUtils {
     	System.out.println("mil after 1970 time gmt "+l);
     	
     	System.out.println(ConvertMilliSecondsToFormattedDate(l));*/
-    	//System.out.println(doesOverLap(100, 150, 151, 180));
-    	List<String> a=new ArrayList<String>();
-    	a.add("10:20");
-    	a.add("50:100");
-    	a.add("60:120");
-    	a.add("15:40");
-    	a.add("30:45");
-    	a.add("150:180");
-    	a.add("300:400");
+    	System.out.println(doesOverLap(1542177000000l,1542189600000l, 1542177000000l, 1542178800000l));
+   	List<String> a=new ArrayList<String>();
+    	a.add("1542177000000:1542189600000");
+    	a.add("1542177000000:1542178800000");
+
     	a=getCompactOverlappedRegion(a);
     	Collections.sort(a);
     	
     	//System.out.println(doesOverLap(500,1000,10,20));
-    	System.out.println("now size "+a.size());
-    	for(String s:a)
+    	System.out.println("now  "+a);
+    /*	for(String s:a)
     	{
     		System.out.println(s);
-    	}
+    	}*/
+
+    	Date d= new Date(1542133800000l);
+    	Date t= new Date(1542198600000l);
+    	System.out.println(d);
+    	System.out.println(t);
+    	
+
+    	Date d1= new Date(1542133800000l);
+    	Date t1= new Date(1542135600000l);
+    	System.out.println(d1);
+    	System.out.println(t1);
+    	System.out.println(ConvertFormattedDateToMilis("2018-11-14T12:00:00.000"));
+    	System.out.println(ConvertFormattedDateToMilis("2018-11-14T00:00:00.000"));
     	
     }
     
@@ -93,14 +107,16 @@ public class CalendarUtils {
     		return list;
     	int count=0;
     	
-    	for(int i=0;i<list.size()-1;i++)
+    	for(int i=0;i<list.size();i++)
     	{  
     		long start=Long.parseLong(list.get(i).split(":")[0]);
     		long end=Long.parseLong(list.get(i).split(":")[1]);
     		long start1=0;
     		long end1=0;
     		
-    	 	for(int j=i+1;j<list.size()-1;j++)
+    	
+    		
+    	 	for(int j=i+1;j<list.size();j++)
         	{  
     	 	
     	 	
@@ -112,6 +128,8 @@ public class CalendarUtils {
         			 flag=doesOverLap(start, end, start1, end1);
         		 else
         			 flag=doesOverLap(start1, end1, start, end);
+        		 
+        		 System.out.println("vv "+flag);
         		 
         		if(flag)
         		{
