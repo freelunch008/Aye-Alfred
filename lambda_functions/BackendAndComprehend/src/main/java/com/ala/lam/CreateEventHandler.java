@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -148,10 +149,11 @@ public class CreateEventHandler {
 	}
 	
 	
-	private void crateEvent(Connection con,CreateEventVO cvo,UserAccessTokenVO uvo, Context context) throws Exception{
+	private void crateEvent(Connection con,CreateEventVO cvo,UserAccessTokenVO uvo, Context context) throws Exception
+	{
 		
 
-		findTimeToCreateEvent(cvo, uvo, context);
+		findTimeToCreateEvent4(cvo, uvo, context);
 
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
 		List<Attendee> attendee=cvo.getAttendees();
@@ -263,7 +265,7 @@ public class CreateEventHandler {
 		
 		
 	}
-	private void findTimeToCreateEvent(CreateEventVO cvo,UserAccessTokenVO uvo, Context context) throws Exception{
+	private void findTimeToCreateEvent4(CreateEventVO cvo,UserAccessTokenVO uvo, Context context) throws Exception{
 		
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
 		Connection con=DBConnection.getConnection();
@@ -358,17 +360,35 @@ public class CreateEventHandler {
 				
 		//for loop attendee	
 		}
+		context.getLogger().log("before getCompactOverlappedRegion");
+		attendeeTimes=CalendarUtils.getCompactOverlappedRegion(attendeeTimes);
+		Collections.sort(attendeeTimes);
+		context.getLogger().log("after getCompactOverlappedRegion");
 		
-		for(String s:attendeeTimes)
+		int found=0;
+		for(int i=0;i<attendeeTimes.size();i++)
 		{
-			long x=Long.parseLong(s.split(":")[0]);
-			long y=Long.parseLong(s.split(":")[1]);
-			
-			if(eventStart>=x)
+			for(int j=i+1;j<attendeeTimes.size();j++)
 			{
+				long end1=Long.parseLong(attendeeTimes.get(i).split(":")[1]);
+				long start2=Long.parseLong(attendeeTimes.get(j).split(":")[0]);
 				
+				if((start2-end1)>30*60*1000)
+				{
+					eventStart=end1;
+					eventEnd=end1+30*60*1000;
+					found++;
+					break;
+					
+				}
+				if(found>0)
+					break;
+
 			}
 		}
+		
+		context.getLogger().log("resultant start time"+eventStart);
+		context.getLogger().log("resultant end time"+eventEnd);
 		
 		cvo.setStartDate(eventStart);
 		cvo.setEndDate(eventEnd);

@@ -176,8 +176,8 @@ public  class ConsumerLambdaHandler implements RequestHandler<SQSEvent, Void>{
 	    		if(date.getTimeOfDay().equals("afternoon"))
 	    		{
 	    			
-	    			 stime=result+"T"+"13:00:00.000";
-	    			 etime=result+"T"+"15:00:00.000";
+	    			 stime=result+"T"+"12:00:00.000";
+	    			 etime=result+"T"+"18:00:00.000";
 	    		}
 	    		
 	    		if(date.getTimeOfDay().equals("evening"))
